@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+# needs to be set to directory where quiz is living
+LOCAL="/usr/local/pkgs/quizzapp"
+
+if git -C $LOCAL fetch origin && git -C $LOCAL diff --quiet HEAD origin/main; then
+  echo "no changes in repository"
+  exit 0
+
+else
+  # pull and build image
+  git -C $LOCAL pull
+  $LOCAL/docker-build.sh
+
+  # stop container and restart
+  docker compose -f $LOCAL/docker-compose.yml down
+  docker compose -f $LOCAL/docker-compose.yml up -d
+
+fi

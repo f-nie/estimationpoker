@@ -1,0 +1,21 @@
+services:
+  estimationpoker:
+    image: estimationpoker:latest
+    container_name: estimationpoker
+    networks:
+      - lan
+#    ports:
+#      - 3000:3000
+    volumes:
+      - db:/app/db
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+      caddy: "import rpa {{upstreams 3000}} quiz _"
+
+networks:
+  lan:
+    external: true
+
+volumes:
+  db:
+
